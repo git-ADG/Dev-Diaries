@@ -30,7 +30,9 @@ public class NotesService {
         
         Set<Tag> tags = detectedTags.stream().map(tagname -> tagsRepository.findByNameIgnoreCase(tagname).orElseGet(() -> tagsRepository.save(new Tag(null, tagname)))).collect(Collectors.toSet());
 
-        Note newNote = new Note(note.id(), note.title(), note.content(), note.format(), note.createdAt(), tags);
+        UUID id = note.id() != null ? note.id() : UUID.randomUUID();
+
+        Note newNote = new Note(id, note.title(), note.content(), note.format(), note.createdAt(), tags);
 
         return notesRepository.save(newNote);
     }
