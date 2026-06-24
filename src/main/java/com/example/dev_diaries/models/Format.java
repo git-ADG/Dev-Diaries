@@ -4,4 +4,4 @@ public enum Format {
     CODE,
     MARKDOWN,
     PLAIN_TEXT
-};
+}

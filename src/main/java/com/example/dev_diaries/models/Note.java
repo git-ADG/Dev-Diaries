@@ -33,4 +33,5 @@ public record Note(
             inverseJoinColumns = @JoinColumn(name = "tag_id")) 
         Set<Tag> tags) {
 
+
 }
