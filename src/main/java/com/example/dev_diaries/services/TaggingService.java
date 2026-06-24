@@ -17,6 +17,45 @@ public class TaggingService {
     public TaggingService() {
 
         // ==========================================
+        // Data Structures & Algorithms (DSA)
+        // ==========================================
+        tagDictionary.put(Pattern.compile(
+                "(?i)\\b(array|linked list|stack|queue|binary tree|bst|graph|trie|heap|priority queue|hash map|hash set|segment tree|fenwick tree|bit|disjoint set|dsu)\\b"),
+                "Data Structures");
+        tagDictionary.put(Pattern.compile(
+                "(?i)\\b(sorting|merge sort|quick sort|binary search|dynamic programming|dp|knapsack|lcs|greedy|backtracking|recursion|dfs|bfs|depth first|breadth first|dijkstra|bellman ford|kruskal|prim|topological sort|kmp|two pointer|sliding window)\\b"),
+                "Algorithms");
+
+        // ==========================================
+        // Competitive Programming Platforms
+        // ==========================================
+        tagDictionary.put(Pattern.compile(
+                "(?i)\\b(leetcode|codeforces|codechef|atcoder|hackerrank|competitive programming|cp template)\\b"),
+                "Competitive Programming");
+
+        // ==========================================
+        // CP Language Templates (Fast I/O & Snippets)
+        // ==========================================
+
+        // C++ CP Signatures: Catching the famous wildcard include, fast I/O macros, and
+        // common typedefs
+        tagDictionary.put(Pattern.compile(
+                "(?i)(bits/stdc\\+\\+\\.h|ios_base::sync_with_stdio|cin\\.tie|cout\\.tie|#define pb|typedef long long ll)"),
+                "C++ CP Template");
+
+        // Java CP Signatures: Catching FastScanner implementations, Tokenizers, and
+        // custom IO
+        tagDictionary.put(Pattern.compile(
+                "(?i)\\b(StringTokenizer|BufferedReader|PrintWriter|InputStreamReader|Arrays\\.sort|Collections\\.sort)\\b"),
+                "Java CP Template");
+
+        // Python CP Signatures: Catching fast stdin overrides, deque, and recursion
+        // limit bumps
+        tagDictionary.put(Pattern.compile(
+                "(?i)\\b(sys\\.stdin\\.readline|sys\\.setrecursionlimit|collections\\.deque|heapq|defaultdict|Counter)\\b"),
+                "Python CP Template");
+
+        // ==========================================
         // Version Control & Collaboration
         // ==========================================
         tagDictionary.put(
