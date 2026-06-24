@@ -26,15 +26,12 @@ public class NotesService {
     }
 
     public Note createNote(Note note){
-        Set<String> detectedTags = taggingService.extractTagsFromContent(note.content());
+        Set<String> detectedTags = taggingService.extractTagsFromContent(note.getContent());
         
-        Set<Tag> tags = detectedTags.stream().map(tagname -> tagsRepository.findByNameIgnoreCase(tagname).orElseGet(() -> tagsRepository.save(new Tag(null, tagname)))).collect(Collectors.toSet());
+        Set<Tag> tags = detectedTags.stream().map(tagname -> tagsRepository.findByNameIgnoreCase(tagname).orElseGet(() -> tagsRepository.save(new Tag(tagname)))).collect(Collectors.toSet());
 
-        UUID id = note.id() != null ? note.id() : UUID.randomUUID();
-
-        Note newNote = new Note(id, note.title(), note.content(), note.format(), note.createdAt(), tags);
-
-        return notesRepository.save(newNote);
+        note.setTags(tags);
+        return notesRepository.save(note);
     }
 
     public List<Note> getAllNotes() {
