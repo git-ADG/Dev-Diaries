@@ -37,20 +37,17 @@ public class TaggingService {
         // CP Language Templates (Fast I/O & Snippets)
         // ==========================================
 
-        // C++ CP Signatures: Catching the famous wildcard include, fast I/O macros, and
-        // common typedefs
+        // C++ CP Signatures
         tagDictionary.put(Pattern.compile(
                 "(?i)(bits/stdc\\+\\+\\.h|ios_base::sync_with_stdio|cin\\.tie|cout\\.tie|#define pb|typedef long long ll)"),
                 "C++ CP Template");
 
-        // Java CP Signatures: Catching FastScanner implementations, Tokenizers, and
-        // custom IO
+        // Java CP Signatures
         tagDictionary.put(Pattern.compile(
                 "(?i)\\b(StringTokenizer|BufferedReader|PrintWriter|InputStreamReader|Arrays\\.sort|Collections\\.sort)\\b"),
                 "Java CP Template");
 
-        // Python CP Signatures: Catching fast stdin overrides, deque, and recursion
-        // limit bumps
+        // Python CP Signatures
         tagDictionary.put(Pattern.compile(
                 "(?i)\\b(sys\\.stdin\\.readline|sys\\.setrecursionlimit|collections\\.deque|heapq|defaultdict|Counter)\\b"),
                 "Python CP Template");

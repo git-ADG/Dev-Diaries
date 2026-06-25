@@ -14,6 +14,8 @@ import java.util.UUID;
 
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PutMapping;
+
 
 
 
@@ -39,5 +41,10 @@ public class NotesController {
     @PostMapping("/")
     public Note createNote(@RequestBody Note note){
         return notesService.createNote(note);
+    }
+
+    @PutMapping("/{id}")
+    public Note updateNote(@PathVariable UUID id, @RequestBody Note note){
+        return notesService.updateNote(id, note);
     }
 }
