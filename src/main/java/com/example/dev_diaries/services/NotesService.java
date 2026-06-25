@@ -13,6 +13,8 @@ import com.example.dev_diaries.models.Tag;
 import com.example.dev_diaries.repositories.NotesRepository;
 import com.example.dev_diaries.repositories.TagsRepository;
 
+import jakarta.persistence.EntityNotFoundException;
+
 @Service
 public class NotesService {
     TaggingService taggingService;
@@ -40,5 +42,21 @@ public class NotesService {
 
     public Optional<Note> getNoteBYId(UUID id) {
         return notesRepository.findById(id);
+    }
+
+    public Note updateNote(UUID id, Note newNote){
+        Note oldNote = notesRepository.findById(id).orElseThrow();
+
+        oldNote.setTitle(newNote.getTitle());
+        oldNote.setContent(newNote.getContent());
+        oldNote.setFormat(newNote.getFormat());
+        
+        Set<String> extractedTags = taggingService.extractTagsFromContent(newNote.getContent());
+
+        Set<Tag> tags = extractedTags.stream().map((tagString) -> tagsRepository.findByNameIgnoreCase(tagString).orElseGet(() -> tagsRepository.save(new Tag(tagString)))).collect(Collectors.toSet());
+
+        oldNote.setTags(tags);
+
+        return notesRepository.save(oldNote);
     }
 }

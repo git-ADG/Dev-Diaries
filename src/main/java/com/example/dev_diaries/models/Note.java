@@ -19,7 +19,8 @@ public class Note {
     private String content;
 
     @ManyToMany(cascade = { CascadeType.PERSIST, CascadeType.MERGE })
-    @JoinTable(name = "note_tags", joinColumns = @JoinColumn(name = "note_id"), inverseJoinColumns = @JoinColumn(name = "tag_id"))
+    @JoinTable(name = "note_tags", joinColumns = @JoinColumn(name = "note_id"), 
+    inverseJoinColumns = @JoinColumn(name = "tag_id"))
     private Set<Tag> tags = new HashSet<>();
 
     private Format format;
