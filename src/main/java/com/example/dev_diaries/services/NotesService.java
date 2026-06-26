@@ -8,14 +8,15 @@ import java.util.UUID;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
+import com.example.dev_diaries.models.Format;
 import com.example.dev_diaries.models.Note;
 import com.example.dev_diaries.models.Tag;
 import com.example.dev_diaries.repositories.NotesRepository;
 import com.example.dev_diaries.repositories.TagsRepository;
-
-
+import com.example.dev_diaries.specifications.NotesSpecification;
 
 @Service
 public class NotesService {
@@ -29,14 +30,15 @@ public class NotesService {
         this.tagsRepository = tagsRepository;
     }
 
-    public Note createNote(Note note){
+    public Note createNote(Note note) {
         String text = Stream.of(note.getContent(), note.getTitle())
                 .filter(Objects::nonNull)
                 .collect(Collectors.joining(" "));
 
         Set<String> detectedTags = taggingService.extractTagsFromContent(text);
-        
-        Set<Tag> tags = detectedTags.stream().map(tagname -> tagsRepository.findByNameIgnoreCase(tagname).orElseGet(() -> tagsRepository.save(new Tag(tagname)))).collect(Collectors.toSet());
+
+        Set<Tag> tags = detectedTags.stream().map(tagname -> tagsRepository.findByNameIgnoreCase(tagname)
+                .orElseGet(() -> tagsRepository.save(new Tag(tagname)))).collect(Collectors.toSet());
 
         note.setTags(tags);
         return notesRepository.save(note);
@@ -50,22 +52,43 @@ public class NotesService {
         return notesRepository.findById(id);
     }
 
-    public Note updateNote(UUID id, Note newNote){
+    public Note updateNote(UUID id, Note newNote) {
         Note oldNote = notesRepository.findById(id).orElseThrow();
 
-        if(newNote.getTitle() != null && !newNote.getTitle().isBlank()) oldNote.setTitle(newNote.getTitle());
-        if (newNote.getContent() != null && !newNote.getContent().isBlank()) oldNote.setContent(newNote.getContent());
-        if (newNote.getFormat() != null) oldNote.setFormat(newNote.getFormat());
-        
+        if (newNote.getTitle() != null && !newNote.getTitle().isBlank())
+            oldNote.setTitle(newNote.getTitle());
+        if (newNote.getContent() != null && !newNote.getContent().isBlank())
+            oldNote.setContent(newNote.getContent());
+        if (newNote.getFormat() != null)
+            oldNote.setFormat(newNote.getFormat());
+
         String text = Stream.of(oldNote.getContent(), oldNote.getTitle())
-        .filter(Objects::nonNull)
-        .collect(Collectors.joining(" "));
+                .filter(Objects::nonNull)
+                .collect(Collectors.joining(" "));
         Set<String> extractedTags = taggingService.extractTagsFromContent(text);
 
-        Set<Tag> tags = extractedTags.stream().map((tagString) -> tagsRepository.findByNameIgnoreCase(tagString).orElseGet(() -> tagsRepository.save(new Tag(tagString)))).collect(Collectors.toSet());
+        Set<Tag> tags = extractedTags.stream().map((tagString) -> tagsRepository.findByNameIgnoreCase(tagString)
+                .orElseGet(() -> tagsRepository.save(new Tag(tagString)))).collect(Collectors.toSet());
 
         oldNote.setTags(tags);
 
         return notesRepository.save(oldNote);
+    }
+
+    public List<Note> searchNotes(String keyword, String tagName, Format format) {
+        Specification<Note> spec = Specification.where(Specification.unrestricted());
+        if(keyword != null && !keyword.isBlank()){
+            spec = spec.and(NotesSpecification.containsKeyword(keyword));
+        }
+
+        if(tagName != null && !tagName.isBlank()){
+            spec = spec.and(NotesSpecification.hasTag(tagName));
+        }
+
+        if(format != null){
+            spec = spec.and(NotesSpecification.hasFormat(format));
+        }
+
+        return notesRepository.findAll(spec);
     }
 }
