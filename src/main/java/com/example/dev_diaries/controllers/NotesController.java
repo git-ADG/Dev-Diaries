@@ -1,8 +1,10 @@
 package com.example.dev_diaries.controllers;
 
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.example.dev_diaries.models.Format;
 import com.example.dev_diaries.models.Note;
 import com.example.dev_diaries.services.NotesService;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -29,8 +31,12 @@ public class NotesController {
     }
 
     @GetMapping("/")
-    public List<Note> getAllNotes() {
-        return notesService.getAllNotes();
+    public List<Note> getAllNotes(
+        @RequestParam(required = false) String keyword,
+        @RequestParam(required = false) String tagName,
+        @RequestParam(required = false) Format format
+    ) {
+        return notesService.searchNotes(keyword, tagName, format);
     }
 
     @GetMapping("/{id}")

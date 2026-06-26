@@ -4,7 +4,8 @@ import java.util.UUID;
 import com.example.dev_diaries.models.Note;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 
-public interface NotesRepository extends JpaRepository<Note, UUID> {
+public interface NotesRepository extends JpaRepository<Note, UUID>, JpaSpecificationExecutor<Note> {
     
 }
