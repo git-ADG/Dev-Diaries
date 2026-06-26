@@ -53,11 +53,11 @@ public class NotesService {
     public Note updateNote(UUID id, Note newNote){
         Note oldNote = notesRepository.findById(id).orElseThrow();
 
-        oldNote.setTitle(newNote.getTitle());
-        oldNote.setContent(newNote.getContent());
-        oldNote.setFormat(newNote.getFormat());
+        if(newNote.getTitle() != null && !newNote.getTitle().isBlank()) oldNote.setTitle(newNote.getTitle());
+        if (newNote.getContent() != null && !newNote.getContent().isBlank()) oldNote.setContent(newNote.getContent());
+        if (newNote.getFormat() != null) oldNote.setFormat(newNote.getFormat());
         
-        String text = Stream.of(newNote.getContent(), newNote.getTitle())
+        String text = Stream.of(oldNote.getContent(), oldNote.getTitle())
         .filter(Objects::nonNull)
         .collect(Collectors.joining(" "));
         Set<String> extractedTags = taggingService.extractTagsFromContent(text);

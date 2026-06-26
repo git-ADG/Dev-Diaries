@@ -99,7 +99,7 @@ public class TaggingService {
         // Backend Languages & Frameworks
         // ==========================================
         tagDictionary.put(Pattern.compile(
-                "(?i)\\b(java|spring|spring boot|jpa|hibernate|maven|gradle|mvn|pom\\.xml|quarkus|micronaut)\\b"),
+                "(?i)\\b(java|spring|spring boot|springboot|jpa|hibernate|maven|gradle|mvn|pom\\.xml|quarkus|micronaut)\\b"),
                 "Java / Spring");
         tagDictionary.put(
                 Pattern.compile("(?i)\\b(node\\.js|node|express|npm|yarn|npx|package\\.json|nest\\.js|fastify)\\b"),
