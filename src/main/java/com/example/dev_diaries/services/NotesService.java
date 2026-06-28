@@ -91,4 +91,8 @@ public class NotesService {
 
         return notesRepository.findAll(spec);
     }
+
+    public void deleteNote(UUID id) {
+        notesRepository.deleteById(id);
+    }
 }
