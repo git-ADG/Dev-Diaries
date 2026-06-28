@@ -195,7 +195,7 @@ public class TaggingService {
 
         return tagDictionary.entrySet().stream()
                 .filter(entry -> entry.getKey().matcher(content).find())
-                .map(Map.Entry::getValue)
+                .map(entry -> entry.getValue())
                 .collect(Collectors.toSet());
     }
 }
