@@ -17,7 +17,6 @@ import java.util.Optional;
 import java.util.UUID;
 
 import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -63,9 +62,13 @@ public class NotesController {
     }
 
     @GetMapping("/export")
-    public ResponseEntity<byte[]> exportNotes(){
+    public ResponseEntity<byte[]> exportNotes(
+        @RequestParam(required = false) String keyword, 
+        @RequestParam(required = false) String tagName,
+        @RequestParam(required = false) Format format
+    ){
         try{
-            byte[] zipData = exportService.exportToZip();
+            byte[] zipData = exportService.exportToZip(keyword, tagName, format);
             // System.out.println(zipData.toString());
 
             HttpHeaders headers = new HttpHeaders();

@@ -10,20 +10,21 @@ import java.util.zip.ZipOutputStream;
 
 import org.springframework.stereotype.Service;
 
+import com.example.dev_diaries.models.Format;
 import com.example.dev_diaries.models.Note;
 import com.example.dev_diaries.models.Tag;
 import com.example.dev_diaries.repositories.NotesRepository;
 
 @Service
 public class ExportService {
-    private final NotesRepository notesRepository;
+    private final NotesService notesService;
 
-    public ExportService(NotesRepository notesRepository) {
-        this.notesRepository = notesRepository;
+    public ExportService(NotesService notesService) {
+        this.notesService = notesService;
     }
 
-    public byte[] exportToZip() throws IOException {
-        List<Note> notes = notesRepository.findAll();
+    public byte[] exportToZip(String keyword, String tagName, Format format) throws IOException {
+        List<Note> notes = notesService.searchNotes(keyword, tagName, format);
         // notes.forEach((note) -> {
         //     System.out.println(note.getId().toString());
         // });
