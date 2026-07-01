@@ -1,4 +1,4 @@
-package com.example.dev_diaries.configs;
+package com.example.dev_diaries.security;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
