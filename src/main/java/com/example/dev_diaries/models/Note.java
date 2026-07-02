@@ -35,6 +35,17 @@ public class Note {
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
+    @Column(name = "code_language")
+    private String language;
+
+    public String getLanguage() {
+        return language;
+    }
+
+    public void setLanguage(String language) {
+        this.language = language;
+    }
+
     public User getUser() {
         return user;
     }

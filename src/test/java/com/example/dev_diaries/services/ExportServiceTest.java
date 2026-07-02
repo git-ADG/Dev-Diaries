@@ -1,6 +1,8 @@
 package com.example.dev_diaries.services;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -11,18 +13,16 @@ import java.util.zip.ZipInputStream;
 
 import org.junit.jupiter.api.Test;
 
-import com.example.dev_diaries.repositories.NotesRepository;
-
 public class ExportServiceTest {
 
     @Test
     void exportToZipReturnsEmptyZipWhenThereAreNoNotes() throws IOException {
-        NotesRepository notesRepository = mock(NotesRepository.class);
-        when(notesRepository.findAll()).thenReturn(List.of());
+        NotesService notesService = mock(NotesService.class);
+        when(notesService.searchNotes(anyString(), anyString(), any(), anyString())).thenReturn(List.of());
 
-        ExportService exportService = new ExportService(notesRepository);
+        ExportService exportService = new ExportService(notesService);
 
-        byte[] zipData = exportService.exportToZip();
+        byte[] zipData = exportService.exportToZip("", "", null, "test@example.com");
 
         assertThat(zipData).isNotEmpty();
 
