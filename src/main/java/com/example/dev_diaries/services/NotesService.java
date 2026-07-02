@@ -83,6 +83,7 @@ public class NotesService {
                 .orElseGet(() -> tagsRepository.save(new Tag(tagString)))).collect(Collectors.toSet());
 
         oldNote.setTags(tags);
+        oldNote.setLanguage(newNote.getLanguage());
 
         return notesRepository.save(oldNote);
     }

@@ -19,7 +19,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import java.io.IOException;
 import java.security.Principal;
 import java.util.List;
-import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -48,6 +47,7 @@ public class NotesController {
         noteResponse.setFormat(note.getFormat());
         noteResponse.setId(note.getId());
         noteResponse.setTitle(note.getTitle());
+        noteResponse.setLanguage(note.getLanguage());
 
         if(note.getTags() != null){
             Set<String> tags = note.getTags().stream().map(t -> t.getName()).collect(Collectors.toSet());
@@ -82,6 +82,7 @@ public class NotesController {
         noteToCreate.setTitle(noteRequest.getTitle());
         noteToCreate.setContent(noteRequest.getContent());
         noteToCreate.setFormat(noteRequest.getFormat());
+        noteToCreate.setLanguage(noteRequest.getLanguage());
 
         Note createdNote = notesService.createNote(noteToCreate, principal.getName());
 
@@ -96,6 +97,7 @@ public class NotesController {
         noteToUpdate.setTitle(noteRequest.getTitle());
         noteToUpdate.setContent(noteRequest.getContent());
         noteToUpdate.setFormat(noteRequest.getFormat());
+        noteToUpdate.setLanguage(noteRequest.getLanguage());
 
         Note updatedNoted = notesService.updateNote(id, noteToUpdate, principal.getName());
 

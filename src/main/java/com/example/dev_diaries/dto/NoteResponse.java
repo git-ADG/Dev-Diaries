@@ -14,6 +14,15 @@ public class NoteResponse {
     private Set<String> tags;
     private Format format;
     private LocalDateTime createdAt;
+    private String language;
+
+    public String getLanguage() {
+        return language;
+    }
+
+    public void setLanguage(String language) {
+        this.language = language;
+    }
 
     public UUID getId() {
         return id;

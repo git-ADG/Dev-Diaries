@@ -5,9 +5,22 @@ import { AuthContext } from '../context/authContext';
 import { LogOut, Plus, Search, FileCode2 } from 'lucide-react';
 import { getTagColor } from '../utils/tagColors';
 import { format } from 'date-fns';
+import NoteEditor from '../components/noteEditor';
 
 const Dashboard = () => {
   const { logout } = useContext(AuthContext);
+
+  const [isEditorOpen, setIsEditorOpen] = useState(false);
+  const [selectedNote, setSelectedNote] = useState(null);
+
+  const handleSaveNote = async (data) => {
+    if (selectedNote) {
+      await api.put(`/notes/${selectedNote.id}`, data);
+    } else {
+      await api.post('/notes/', data);
+    }
+    setIsEditorOpen(false);
+  };
 
   const { data: notes, isLoading } = useQuery({
     queryKey: ['notes'],
@@ -66,6 +79,13 @@ const Dashboard = () => {
             ))}
           </div>
         )}
+        {isEditorOpen && (
+        <NoteEditor 
+          note={selectedNote} 
+          onSave={handleSaveNote} 
+          onClose={() => setIsEditorOpen(false)} 
+        />
+      )}
       </main>
     </div>
   );

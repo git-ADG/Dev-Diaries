@@ -17,6 +17,16 @@ public class NoteRequest {
     @NotNull(message = "format must be {CODE, PLAIN_TEXT, MARKDOWN}")
     private Format format;
 
+    private String language;
+
+    public String getLanguage() {
+        return language;
+    }
+
+    public void setLanguage(String language) {
+        this.language = language;
+    }
+
     public String getTitle() {
         return title;
     }
