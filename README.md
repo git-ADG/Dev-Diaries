@@ -64,24 +64,16 @@ The native Java file backup pipeline queries data matching user permissions, app
 ## Cloud Deployment & Performance Optimizations
 
 ```text
-               [ React Frontend (Vercel CDN Client) ]
+                         [React Frontend]
                                  │
                          HTTPS + JWT Bearer
                                  ▼
-            [ Spring Boot Backend API (Koyeb Singapore Container) ]
+                    [Spring Boot Backend API]
                                  │
                    Low-Latency Local Query Loop (1-5ms)
                                  ▼
-         [ Cloud PostgreSQL Database Cluster (ap-southeast Region) ]
+               [ Cloud PostgreSQL Database Cluster ]
 ```
-
-### Eliminating Cross-Continental Latency Loops
-
-During initial deployment, the full-stack system faced major performance lag due to a geographic distribution split: the frontend was global, the Spring Boot container was running in Oregon (USA), and the PostgreSQL database instance was running in Singapore (`ap-southeast`).
-
-Because Hibernate frequently makes sequential SQL queries to verify relational mappings, every click forced data back-and-forth across the Pacific Ocean multiple times, introducing 500ms+ processing overhead.
-
-* **The Optimization:** Co-located the containerized backend directly into a Koyeb container in the Singapore cluster region. Bringing the business execution logic into the exact same room as the cloud database engine eliminated the cross-ocean detour, dropping raw query overhead down to single-digit milliseconds (1-5ms).
 
 ---
 
