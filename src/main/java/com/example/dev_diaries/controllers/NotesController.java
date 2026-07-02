@@ -4,11 +4,15 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.example.dev_diaries.dto.NoteRequest;
 import com.example.dev_diaries.dto.NoteResponse;
 import com.example.dev_diaries.models.Format;
 import com.example.dev_diaries.models.Note;
 import com.example.dev_diaries.services.ExportService;
 import com.example.dev_diaries.services.NotesService;
+
+import jakarta.validation.Valid;
+
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
@@ -59,23 +63,45 @@ public class NotesController {
     }
 
     @GetMapping("/")
-    public List<Note> getAllNotes(
+    public ResponseEntity<List<NoteResponse>> getAllNotes(
         @RequestParam(required = false) String keyword,
         @RequestParam(required = false) String tagName,
         @RequestParam(required = false) Format format,
         Principal principal
     ) {
-        return notesService.searchNotes(keyword, tagName, format, principal.getName());
+        List<Note> notes = notesService.searchNotes(keyword, tagName, format, principal.getName());
+
+        List<NoteResponse> responses = notes.stream().map(t -> convertToDTO(t)).collect(Collectors.toList());
+
+        return ResponseEntity.ok(responses);
     }
 
     @PostMapping("/")
-    public Note createNote(@RequestBody Note note, Principal principal){
-        return notesService.createNote(note, principal.getName());
+    public ResponseEntity<NoteResponse> createNote(@Valid @RequestBody NoteRequest noteRequest, Principal principal){
+        Note noteToCreate = new Note();
+        noteToCreate.setTitle(noteRequest.getTitle());
+        noteToCreate.setContent(noteRequest.getContent());
+        noteToCreate.setFormat(noteRequest.getFormat());
+
+        Note createdNote = notesService.createNote(noteToCreate, principal.getName());
+
+        NoteResponse response = convertToDTO(createdNote);
+
+        return ResponseEntity.ok(response);
     }
 
     @PutMapping("/{id}")
-    public Note updateNote(@PathVariable UUID id, @RequestBody Note note, Principal principal){
-        return notesService.updateNote(id, note, principal.getName());
+    public ResponseEntity<NoteResponse> updateNote(@PathVariable UUID id, @RequestBody NoteRequest noteRequest, Principal principal){
+        Note noteToUpdate = new Note();
+        noteToUpdate.setTitle(noteRequest.getTitle());
+        noteToUpdate.setContent(noteRequest.getContent());
+        noteToUpdate.setFormat(noteRequest.getFormat());
+
+        Note updatedNoted = notesService.updateNote(id, noteToUpdate, principal.getName());
+
+        NoteResponse response = convertToDTO(updatedNoted);
+
+        return ResponseEntity.ok(response);
     }
 
     @GetMapping("/export")
