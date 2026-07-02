@@ -2,15 +2,16 @@ package com.example.dev_diaries.dto;
 
 import com.example.dev_diaries.models.Format;
 
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 
 public class NoteRequest {
-    @NotNull(message = "Title cannot be empty")
+    @NotNull @NotBlank(message = "Title cannot be empty")
     @Size(max = 100, message = "title cannot exceed 100 characters")
     private String title;
 
-    @NotNull(message = "content cannot be empty")
+    @NotNull @NotBlank(message = "content cannot be empty")
     private String content;
 
     @NotNull(message = "format must be {CODE, PLAIN_TEXT, MARKDOWN}")
