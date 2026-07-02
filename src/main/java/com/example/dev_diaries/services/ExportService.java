@@ -13,7 +13,6 @@ import org.springframework.stereotype.Service;
 import com.example.dev_diaries.models.Format;
 import com.example.dev_diaries.models.Note;
 import com.example.dev_diaries.models.Tag;
-import com.example.dev_diaries.repositories.NotesRepository;
 
 @Service
 public class ExportService {
@@ -23,8 +22,8 @@ public class ExportService {
         this.notesService = notesService;
     }
 
-    public byte[] exportToZip(String keyword, String tagName, Format format) throws IOException {
-        List<Note> notes = notesService.searchNotes(keyword, tagName, format);
+    public byte[] exportToZip(String keyword, String tagName, Format format, String userEmail) throws IOException {
+        List<Note> notes = notesService.searchNotes(keyword, tagName, format, userEmail);
         // notes.forEach((note) -> {
         //     System.out.println(note.getId().toString());
         // });
