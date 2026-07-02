@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import Editor from '@monaco-editor/react';
 import ReactMarkdown from 'react-markdown';
-import { Save, X, Code2 } from 'lucide-react';
+import { Save, X, Code2, Trash2 } from 'lucide-react';
 
 const SUPPORTED_LANGUAGES = [
   // Web Development
@@ -43,7 +43,7 @@ const SUPPORTED_LANGUAGES = [
   { id: 'clojure', name: 'Clojure' }
 ];
 
-const NoteEditor = ({ note, onSave, onClose }) => {
+const NoteEditor = ({ note, onSave, onClose, onDelete }) => {
   const [formData, setFormData] = useState({
     title: note?.title || '',
     content: note?.content || '',
@@ -86,18 +86,28 @@ const NoteEditor = ({ note, onSave, onClose }) => {
 
             {/* Language Selector (ONLY SHOWS IF 'CODE' IS SELECTED) */}
             {formData.format === 'CODE' && (
-              <div className="flex items-center gap-2 bg-gray-800 border border-gray-700 rounded-lg px-3 py-2">
+              <div className="flex items-center gap-2 bg-gray-800 border border-gray-700 rounded-lg px-4 py-2">
                 <Code2 size={16} className="text-cyan-400" />
                 <select
                   value={formData.language}
                   onChange={(e) => setFormData({...formData, language: e.target.value})}
-                  className="bg-transparent text-gray-200 text-sm outline-none"
+                  className="bg-gray-800 border border-gray-700 text-gray-200 text-sm rounded-lg outline-none focus:border-cyan-500"
                 >
                   {SUPPORTED_LANGUAGES.map(lang => (
                     <option key={lang.id} value={lang.id}>{lang.name}</option>
                   ))}
                 </select>
               </div>
+            )}
+
+            {note?.id && (
+              <button 
+                onClick={() => onDelete(note.id)} 
+                className="p-2 text-gray-400 hover:text-white hover:bg-red-600 transition-colors rounded-lg border border-gray-700 bg-gray-800"
+                title="Delete Note"
+              >
+                <Trash2 size={16}/>
+              </button>
             )}
 
             <button onClick={onClose} className="p-2 text-gray-400 hover:text-white transition-colors"><X size={20}/></button>
