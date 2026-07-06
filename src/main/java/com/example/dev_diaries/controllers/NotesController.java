@@ -40,6 +40,11 @@ public class NotesController {
     NotesService notesService;
     ExportService exportService;
 
+    public NotesController(NotesService notesService, ExportService exportService) {
+        this.notesService = notesService;
+        this.exportService = exportService;
+    }
+
     private NoteResponse convertToDTO(Note note){
         NoteResponse noteResponse = new NoteResponse();
         noteResponse.setContent(note.getContent());
@@ -57,9 +62,13 @@ public class NotesController {
         return noteResponse;
     }
 
-    public NotesController(NotesService notesService, ExportService exportService) {
-        this.notesService = notesService;
-        this.exportService = exportService;
+    private Note convertFromDTO(NoteRequest noteRequest){
+        Note note = new Note();
+        note.setTitle(noteRequest.getTitle());
+        note.setContent(noteRequest.getContent());
+        note.setFormat(noteRequest.getFormat());
+        note.setLanguage(noteRequest.getLanguage());
+        return note;
     }
 
     @GetMapping("/")
@@ -78,11 +87,7 @@ public class NotesController {
 
     @PostMapping("/")
     public ResponseEntity<NoteResponse> createNote(@Valid @RequestBody NoteRequest noteRequest, Principal principal){
-        Note noteToCreate = new Note();
-        noteToCreate.setTitle(noteRequest.getTitle());
-        noteToCreate.setContent(noteRequest.getContent());
-        noteToCreate.setFormat(noteRequest.getFormat());
-        noteToCreate.setLanguage(noteRequest.getLanguage());
+        Note noteToCreate = convertFromDTO(noteRequest);
 
         Note createdNote = notesService.createNote(noteToCreate, principal.getName());
 
@@ -93,11 +98,7 @@ public class NotesController {
 
     @PutMapping("/{id}")
     public ResponseEntity<NoteResponse> updateNote(@PathVariable UUID id, @RequestBody NoteRequest noteRequest, Principal principal){
-        Note noteToUpdate = new Note();
-        noteToUpdate.setTitle(noteRequest.getTitle());
-        noteToUpdate.setContent(noteRequest.getContent());
-        noteToUpdate.setFormat(noteRequest.getFormat());
-        noteToUpdate.setLanguage(noteRequest.getLanguage());
+        Note noteToUpdate = convertFromDTO(noteRequest);
 
         Note updatedNoted = notesService.updateNote(id, noteToUpdate, principal.getName());
 

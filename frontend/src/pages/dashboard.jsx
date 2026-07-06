@@ -2,7 +2,7 @@ import React, { useContext, useState } from 'react';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import api from '../services/api';
 import { AuthContext } from '../context/authContext';
-import { LogOut, Plus, Search, FileCode2, X } from 'lucide-react';
+import { LogOut, Plus, Search, FileCode2, X , Download} from 'lucide-react';
 import { getTagColor } from '../utils/tagColors';
 import { format } from 'date-fns';
 import NoteEditor from '../components/noteEditor';
@@ -46,6 +46,24 @@ const Dashboard = () => {
     }
   };
 
+  const handleDownloadNotes = async () => {
+    try{
+      await api.get('/notes/export', { responseType: 'blob' })
+        .then((response) => {
+          const url = window.URL.createObjectURL(new Blob([response.data]));
+          const link = document.createElement('a');
+          link.href = url;
+          link.download = 'notes.zip';
+          document.body.appendChild(link);
+          link.click();
+          document.body.removeChild(link);
+        });
+    }catch(error){
+      console.error("Failed to download notes:", error);
+      alert("Failed to download notes. Check console for details.");
+    }
+  }
+
   const handleDeleteNote = async (id) => {
     if (window.confirm("Are you sure you want to delete this note? This action cannot be undone.")) {
       try {
@@ -84,6 +102,10 @@ const Dashboard = () => {
           
           <button onClick={logout} className="p-2 text-gray-400 hover:text-red-400 transition-colors">
             <LogOut size={20} />
+          </button>
+
+          <button onClick={handleDownloadNotes} className="p-2 text-gray-400 hover:text-green-400 transition-colors">
+            <Download size={20} />
           </button>
         </div>
       </header>
