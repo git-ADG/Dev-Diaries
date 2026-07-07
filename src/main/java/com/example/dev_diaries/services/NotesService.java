@@ -2,13 +2,12 @@ package com.example.dev_diaries.services;
 
 import java.util.List;
 import java.util.Objects;
-import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import javax.management.RuntimeErrorException;
+
 
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
