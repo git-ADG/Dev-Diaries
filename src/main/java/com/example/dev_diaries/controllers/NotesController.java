@@ -80,7 +80,9 @@ public class NotesController {
     ) {
         List<Note> notes = notesService.searchNotes(keyword, tagName, format, principal.getName());
 
-        List<NoteResponse> responses = notes.stream().map(t -> convertToDTO(t)).collect(Collectors.toList());
+        List<NoteResponse> responses = notes.stream().map(t -> convertToDTO(t)).collect(Collectors.toList()).reversed();
+
+        // responses.sort((arg0, arg1) -> arg0.getCreatedAt().compareTo(arg1.getCreatedAt()));
 
         return ResponseEntity.ok(responses);
     }
